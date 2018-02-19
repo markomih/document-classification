@@ -1,67 +1,36 @@
-import numpy as np
+from abc import abstractmethod, ABCMeta
 
 from nltk.corpus import reuters
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer, TfidfTransformer
-from nltk.tokenize import word_tokenize
-from nltk import PorterStemmer, WordNetLemmatizer, re
+from sklearn.datasets import fetch_20newsgroups
 
 
-class ReutersDataProvider:
-    porterStemmer = PorterStemmer()
-    lemmatizer = WordNetLemmatizer()
+class DataProvider(metaclass=ABCMeta):
+    @abstractmethod
+    def get_documents(self, start_index=0, end_index=-1): pass
 
-    def __init__(self):
-        self.categories = np.array(list(range(len(reuters.categories()))))
 
-    @staticmethod
-    def get_train_documents(category):
-        train = [field for field in reuters.fileids(categories=[category]) if field.startswith('train')]
-        train = [reuters.raw(t) for t in train]
-        return train
+class ReutersDataProvider(DataProvider):
+    def get_documents(self, start_index=0, end_index=-1):
+        ctgs = reuters.categories()[start_index:end_index]
 
-    @staticmethod
-    def get_test_documents(category):
-        test = [field for field in reuters.fileids(categories=[category]) if field.startswith('test')]
-        test = [reuters.raw(t) for t in test]
-        return test
+        train, train_ctg = [], []
+        test, test_ctg = [], []
+        for category in ctgs:
+            fields = reuters.fileids(categories=[category])
+            for doc_id in fields:
+                if doc_id.startswith('train'):
+                    train = train + [reuters.raw(doc_id)]
+                    train_ctg = train_ctg + [category]
+                if doc_id.startswith('test'):
+                    test = test + [reuters.raw(doc_id)]
+                    test_ctg = test_ctg + [category]
 
-    @staticmethod
-    def extract_features(documents):
-        count_vect = CountVectorizer(tokenizer=ReutersDataProvider.text_tokenization, min_df=3, max_df=0.90,
-                                     max_features=1000, lowercase=True, stop_words='english')
+        return train, train_ctg, test, test_ctg
 
-        x_train_counts = count_vect.fit_transform(documents)
-        tfidf_transformer = TfidfTransformer(use_idf=True, sublinear_tf=True)
-        X = tfidf_transformer.fit_transform(x_train_counts)
 
-        X = X.toarray()
-        return X
+class NewsgroupsDataProvider(DataProvider):
+    def get_documents(self, start_index=0, end_index=-1):
+        train = fetch_20newsgroups(subset='train')
+        test = fetch_20newsgroups(subset='test')
 
-    def get_all_features(self):
-        train, test, train_label, test_label = [], [], [], []
-        for l, category in enumerate(reuters.categories()[2:5]):
-            tmp_train = self.get_train_documents(category)
-            tmp_test = self.get_test_documents(category)
-
-            train = train + tmp_train
-            test = test + tmp_test
-            train_label = train_label + [l] * len(tmp_train)
-            test_label = test_label + [l] * len(tmp_test)
-
-        train_X = self.extract_features(train)
-        train_Y = np.array(train_label)
-
-        test_X = self.extract_features(test)
-        test_Y = np.array(test_label)
-        return train_X, train_Y, test_X, test_Y
-
-    @staticmethod
-    def text_tokenization(text: str):
-        min_length = 3
-        words = word_tokenize(text, 'english')
-        tokens = (list(map(lambda x: ReutersDataProvider.porterStemmer.stem(x), words)))
-        tokens = (list(map(lambda x: ReutersDataProvider.lemmatizer.lemmatize(x), tokens)))
-        p = re.compile('[a-zA-Z]+')
-        filtered_tokens = list(filter(lambda token: p.match(token) and len(token) >= min_length, tokens))
-
-        return filtered_tokens
+        return train.data, train.target, test.data, test.target
