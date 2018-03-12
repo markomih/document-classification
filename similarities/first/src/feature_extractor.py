@@ -12,9 +12,15 @@ class FeatureExtractor:
 
     def text_tokenizer(self, text: str):
         min_length = 3
+
+        text = re.sub('\S*@\S*\s?', '', text)  # remove emails
+        text = re.sub(r'^https?://.*[\r\n]*', '', text, flags=re.MULTILINE)  # remove websites
+
         words = word_tokenize(text, 'english')
-        tokens = (list(map(lambda x: self.stemmer.stem(x), words)))
-        tokens = (list(map(lambda x: self.lemmatizer.lemmatize(x), tokens)))
+        words = list(filter(lambda word: len(word) >= min_length, words))
+
+        # text = (list(map(lambda x: self.stemmer.stem(x), words)))
+        tokens = (list(map(lambda x: self.lemmatizer.lemmatize(x), words)))
         p = re.compile('[a-zA-Z]+')
         filtered_tokens = list(filter(lambda token: p.match(token) and len(token) >= min_length, tokens))
 

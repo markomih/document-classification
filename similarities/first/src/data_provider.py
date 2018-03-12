@@ -1,3 +1,4 @@
+import numpy as np
 from abc import abstractmethod, ABCMeta
 
 from nltk.corpus import reuters
@@ -25,12 +26,14 @@ class ReutersDataProvider(DataProvider):
                     test = test + [reuters.raw(doc_id)]
                     test_ctg = test_ctg + [category]
 
-        return train, train_ctg, test, test_ctg
+        return train, np.array(train_ctg), test, np.array(test_ctg)
 
 
 class NewsgroupsDataProvider(DataProvider):
+    remove = ('headers', 'footers', 'quotes')
+
     def get_documents(self, start_index=0, end_index=-1):
-        train = fetch_20newsgroups(subset='train')
-        test = fetch_20newsgroups(subset='test')
+        train = fetch_20newsgroups(subset='train', remove=self.remove)
+        test = fetch_20newsgroups(subset='test', remove=self.remove)
 
         return train.data, train.target, test.data, test.target

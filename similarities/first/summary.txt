@@ -1,0 +1,1 @@
+1) the bigger the dimensionality the worse the ts_ss accuracy is
