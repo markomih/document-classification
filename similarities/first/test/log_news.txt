@@ -1,0 +1,4 @@
+iteration 7532\7532
+cos_max=4643
+eucl=3039
+ts_ss_min=718

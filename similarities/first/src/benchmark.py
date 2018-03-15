@@ -1,29 +1,31 @@
 import numpy as np
 from numpy.linalg import norm
 import math
+import json
 
 
 class Benchmark:
-    def __init__(self, data_provider, feature_extractor):
+    def __init__(self, data_provider, feature_extractor, debug=True):
         self.data_provider = data_provider
         self.feature_extractor = feature_extractor
+        self.debug = debug
 
     def evaluate(self):
-        print('acquiring data')
+        if self.debug: print('acquiring data')
         train, train_ctg, test, test_ctg = self.data_provider.get_documents()
         # train, train_ctg, test, test_ctg = train[:500], train_ctg[:500], test[:100], test_ctg[:100]
-        print('data acquired')
+        if self.debug: print('data acquired')
 
-        print('extracting features')
+        if self.debug: print('extracting features')
         train_features = self.feature_extractor.extract_features(train, fit=True)
         test_features = self.feature_extractor.extract_features(test, fit=False)
 
         to_discard = np.any(train_features > .1, axis=1)
         train_ctg, train_features = train_ctg[to_discard], train_features[to_discard]
-        print('features extracted')
+        if self.debug: print('features extracted')
 
-        print('number of train documents=', train_ctg.size, 'number of test documents=', train_ctg.size)
-        print('train_features.shape=', train_features.shape, 'test_features.shape=', test_features.shape)
+        if self.debug: print('number of train documents=', train_ctg.size, 'number of test documents=', train_ctg.size)
+        if self.debug: print('train_features.shape=', train_features.shape, 'test_features.shape=', test_features.shape)
 
         eucl, cos_max, ts_ss_min = 0, 0, 0
         n_a = norm(train_features, axis=1)
@@ -48,9 +50,12 @@ class Benchmark:
             if train_ctg[cosine.argmax()] == test_ctg[i]: cos_max += 1
             if train_ctg[tass.argmin()] == test_ctg[i]: ts_ss_min += 1
 
-            if i % 10 == 0: self.log(i, len(test_features), cos_max, eucl, ts_ss_min)
+            if self.debug:
+                if i % 10 == 0: self.log(i, len(test_features), cos_max, eucl, ts_ss_min)
 
-        self.log(len(test_features), len(test_features), cos_max, eucl, ts_ss_min, True)
+        if self.debug: self.log(len(test_features), len(test_features), cos_max, eucl, ts_ss_min, True)
+
+        return json.dumps({'iterations': len(test_features), 'cos': cos_max, 'eucl': eucl, 'ts_ss': ts_ss_min})
 
     @staticmethod
     def log(iteration, total_count, cos_max, eucl, ts_ss_min, save=False):
@@ -60,5 +65,5 @@ class Benchmark:
         s = s + 'ts_ss_min=' + str(ts_ss_min) + '\n'
         print(s)
         if save:
-            with open('log_norm_None.txt', 'w') as f:
+            with open('log.txt', 'w') as f:
                 f.write(s)

@@ -7,7 +7,16 @@ from sklearn.datasets import fetch_20newsgroups
 
 class DataProvider(metaclass=ABCMeta):
     @abstractmethod
-    def get_documents(self, start_index=0, end_index=-1): pass
+    def get_documents(self, start_index=0, end_index=-1):
+        pass
+
+    @staticmethod
+    def get_data_provider(data_provider: str):
+        data_provider = data_provider.strip().lower()
+        if data_provider == 'reuters': return ReutersDataProvider()
+        if data_provider == 'newsgroups': return NewsgroupsDataProvider()
+
+        raise Exception("data_provider is not specified correctly")
 
 
 class ReutersDataProvider(DataProvider):
@@ -30,10 +39,10 @@ class ReutersDataProvider(DataProvider):
 
 
 class NewsgroupsDataProvider(DataProvider):
-    remove = ('headers', 'footers', 'quotes')
+    remove = None  # ('headers', 'footers', 'quotes')
 
     def get_documents(self, start_index=0, end_index=-1):
-        train = fetch_20newsgroups(subset='train', remove=self.remove)
-        test = fetch_20newsgroups(subset='test', remove=self.remove)
+        train = fetch_20newsgroups(subset='train')
+        test = fetch_20newsgroups(subset='test')
 
         return train.data, train.target, test.data, test.target
