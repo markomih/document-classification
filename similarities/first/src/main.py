@@ -4,7 +4,7 @@ from nltk import PorterStemmer, WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 from feature_extractor import FeatureExtractor
-from sacred import Experiment
+from saclsred import Experiment
 from sacred.observers import MongoObserver
 
 ex = Experiment('tsss')
