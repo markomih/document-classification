@@ -1,4 +1,0 @@
-iteration 3731\3731
-cos_max=2552
-eucl=2419
-ts_ss_min=1912
