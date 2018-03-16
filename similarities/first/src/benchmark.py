@@ -55,7 +55,8 @@ class Benchmark:
 
         if self.debug: self.log(len(test_features), len(test_features), cos_max, eucl, ts_ss_min, True)
 
-        return json.dumps({'iterations': len(test_features), 'cos': cos_max, 'eucl': eucl, 'ts_ss': ts_ss_min})
+        # return json.dumps({'iterations': len(test_features), 'cos': cos_max, 'eucl': eucl, 'ts_ss': ts_ss_min})
+        return cos_max, eucl, ts_ss_min, len(test_features)
 
     @staticmethod
     def log(iteration, total_count, cos_max, eucl, ts_ss_min, save=False):
