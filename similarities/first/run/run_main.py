@@ -1,5 +1,5 @@
 from first.run.command_line import CommandLine
-from first.run.config import Configuration, CountVectorizerConfiguration, TfidfTransformerConfiguration
+from first.run.config import BenchmarkConfiguration, CountVectorizerConfiguration, TfidfTransformerConfiguration
 
 
 def get_data_providers():
@@ -41,7 +41,7 @@ def get_configurations():
     for data_provider in data_providers:
         for count_configuration in count_configurations:
             for tfidf_configuration in tfidf_configurations:
-                tmp = Configuration(count_configuration, tfidf_configuration, data_provider)
+                tmp = BenchmarkConfiguration(count_configuration, tfidf_configuration, data_provider)
                 configuration_list.append(tmp)
 
     return configuration_list

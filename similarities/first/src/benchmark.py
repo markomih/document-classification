@@ -7,36 +7,28 @@ import math
 from similarity_measure import EuclideanMeasure, CosineMeasure, TsSsMeasure
 
 
-class Benchmark(metaclass=ABCMeta):
-    def __init__(self, features):
-        self.features = features
-
-    @abstractmethod
-    def evaluate_sim(self, similarity_measure):
-        pass
-
-
-class LocalBenchmark(Benchmark):
+class Benchmark:
     def __init__(self, features, log_file):
-        super().__init__(features)
+        self.features = features
         self.log_file = log_file
 
     def new_evaluate(self):
-        eucl, cos, ts_ss = 0, 0, 0
+        eucl, cos, tsss = 0, 0, 0
 
         euclidean_measure = EuclideanMeasure(self.features.train_features)
         cosine_measure = CosineMeasure(self.features.train_features)
         tsss_measure = TsSsMeasure(self.features.train_features, euclidean_measure, cosine_measure)
 
         for i in range(len(self.features.test_features)):
-            ed_argmin = euclidean_measure.argmin_distance(self.features.test_features)
-            cos_argmax = cosine_measure.argmax_distance(self.features.test_features)
-            tass_argmin = tsss_measure.argmin_distance(self.features.test_features)
+            ed_argmin = euclidean_measure.argmin_distance(self.features.test_features[i])
+            cos_argmax = cosine_measure.argmax_distance(self.features.test_features[i])
+            tass_argmin = tsss_measure.argmin_distance(self.features.test_features[i])
 
             if self.features.train_ctg[ed_argmin] == self.features.test_ctg[i]: eucl += 1
             if self.features.train_ctg[cos_argmax] == self.features.test_ctg[i]: cos += 1
             if self.features.train_ctg[tass_argmin] == self.features.test_ctg[i]: tsss += 1
-
+            # TODO add logging
+        return eucl, cos, tsss, len(self.features.test_features)
     # def evaluate(self):
     #     eucl, cos_max, ts_ss_min = 0, 0, 0
     #     n_a = norm(self.features.train_features, axis=1)

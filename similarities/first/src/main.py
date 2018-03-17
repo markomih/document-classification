@@ -23,7 +23,7 @@ def run(max_df, min_df, max_features, lowercase, stop_words, analyzer, strip_acc
     count_vector = CountVectorizer(min_df=min_df, max_df=max_df, max_features=max_features, lowercase=lowercase,
                                    stop_words=stop_words, analyzer=analyzer, strip_accents=strip_accents)
     tfidf_transformer = TfidfTransformer(use_idf=use_idf, sublinear_tf=sublinear_tf, norm=norm)
-    feature_extractor = FeatureExtractor(PorterStemmer(), WordNetLemmatizer(), count_vector, tfidf_transformer)
+    feature_extractor = FeatureExtractor(PorterStemmer(), count_vector, tfidf_transformer)
     benchmark = Benchmark(DataProvider.get_data_provider(data_provider), feature_extractor, False)
     return benchmark.evaluate()
 
