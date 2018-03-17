@@ -5,9 +5,17 @@ from nltk.corpus import reuters
 from sklearn.datasets import fetch_20newsgroups
 
 
+class Data:
+    def __init__(self, train, train_ctg, test, test_ctg):
+        self.train = train
+        self.train_ctg = train_ctg
+        self.test = test
+        self.test_ctg = test_ctg
+
+
 class DataProvider(metaclass=ABCMeta):
     @abstractmethod
-    def get_documents(self, start_index=0, end_index=-1):
+    def get_data(self, start_index=0, end_index=-1):
         pass
 
     @staticmethod
@@ -20,7 +28,7 @@ class DataProvider(metaclass=ABCMeta):
 
 
 class ReutersDataProvider(DataProvider):
-    def get_documents(self, start_index=0, end_index=-1):
+    def get_data(self, start_index=0, end_index=-1):
         ctgs = reuters.categories()[start_index:end_index]
 
         train, train_ctg = [], []
@@ -35,14 +43,14 @@ class ReutersDataProvider(DataProvider):
                     test = test + [reuters.raw(doc_id)]
                     test_ctg = test_ctg + [category]
 
-        return train, np.array(train_ctg), test, np.array(test_ctg)
+        return Data(train, np.array(train_ctg), test, np.array(test_ctg))
 
 
 class NewsgroupsDataProvider(DataProvider):
     remove = None  # ('headers', 'footers', 'quotes')
 
-    def get_documents(self, start_index=0, end_index=-1):
+    def get_data(self, start_index=0, end_index=-1):
         train = fetch_20newsgroups(subset='train')
         test = fetch_20newsgroups(subset='test')
 
-        return train.data, train.target, test.data, test.target
+        return Data(train.data, train.target, test.data, test.target)
