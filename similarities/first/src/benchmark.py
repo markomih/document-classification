@@ -20,6 +20,7 @@ class Benchmark:
         tsss_measure = TsSsMeasure(self.features.train_features, euclidean_measure, cosine_measure)
 
         for i in range(len(self.features.test_features)):
+            print(self.features.test_features[i])
             ed_argmin = euclidean_measure.argmin_distance(self.features.test_features[i])
             cos_argmax = cosine_measure.argmax_distance(self.features.test_features[i])
             tass_argmin = tsss_measure.argmin_distance(self.features.test_features[i])

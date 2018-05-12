@@ -1,4 +1,3 @@
-import os
 from abc import abstractmethod, ABCMeta
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -90,6 +89,7 @@ class FeaturesConfiguration(Configuration):
                                              tfidf_configuration.tfidf_transformer)
 
         self.features = feature_extractor.get_features()
+        self.count_configuration.max_features = self.features.train_features.shape[1]
 
     def __str__(self):
         return ' '.join(self.get_params())

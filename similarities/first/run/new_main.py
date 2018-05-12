@@ -1,7 +1,6 @@
 from first.run.config import BenchmarkConfiguration, CountVectorizerConfiguration, TfidfTransformerConfiguration, \
     DataConfiguration, FeaturesConfiguration
 
-
 def get_data_configurations():
     dataset_names = ['reuters', 'newsgroups']
 
@@ -20,7 +19,8 @@ def get_count_configurations():
     analyzer = 'word'
     strip_accents = 'unicode'
 
-    max_features_list = [100, 200, 300, 500, 100]
+    # max_features_list = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 948]
+    max_features_list = [50]
 
     count_configurations_list = []
     for max_features in max_features_list:
@@ -33,7 +33,7 @@ def get_count_configurations():
 def get_tfidf_configurations():
     use_idf = True
     sublinear_tf = True
-    norm = None
+    norm = 'l2'
 
     return [TfidfTransformerConfiguration(use_idf, sublinear_tf, norm)]
 
@@ -68,6 +68,15 @@ def get_benchmark_configurations():
 
 
 if __name__ == '__main__':
+    # TODO add unit tests
+    # TODO fork and update
+    # TODO add validation dataset for estimating biases for each feature in feature vectors
+    # TODO then use those features to improve performances of other classification algorithms -> maybe generic algorithms or smth similar
+    # TODO t distribution for the first 20 acquired documents
+    # TODO try with l2 normalization
+    # TODO reduce sparsity by adding tsss values to the cosine measure where zero
+    # train_features.shape= (9506, 948) - 948 is Max for reuters dataset
+    # train_features.shape= (11314, 1600) - 1600 is Max for newsgroups dataset
     benchmark_configurations = get_benchmark_configurations()
     for benchmark_configuration in benchmark_configurations:
         benchmark_configuration.evaluation()

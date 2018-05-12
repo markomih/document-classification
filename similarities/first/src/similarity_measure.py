@@ -22,7 +22,7 @@ class SimilarityMeasure(metaclass=ABCMeta):
 
     def argmin_distance(self, test_feature_vector):
         self.get_distance(test_feature_vector)
-        return self.distance.argmax()
+        return self.distance.argmin()
 
 
 class EuclideanMeasure(SimilarityMeasure):
@@ -38,7 +38,7 @@ class CosineMeasure(SimilarityMeasure):
 
     def get_distance(self, test_feature_vector):
         n = self.train_features_norm * norm(test_feature_vector)
-        # n[n == 0] = -1 TODO fix this if nessary
+        # n[n == 0] = -1 TODO fix this if necessary
         d_ab = np.dot(self.train_features, test_feature_vector)
         self.distance = (d_ab / n)
 

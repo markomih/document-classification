@@ -1,0 +1,16 @@
+min_length,drop_zero_vectors,max_df,min_df,max_features,lowercase,stop_words,analyzer,strip_accents,use_idf,sublinear_tf,norm,dataset,eucl,cos,tsss,out_of
+3,True,0.5,0.01,100,True,english,word,unicode,True,True,None,newsgroups,2342,2592,1683,7532
+3,True,0.5,0.01,200,True,english,word,unicode,True,True,None,newsgroups,2740,3273,1325,7532
+3,True,0.5,0.01,300,True,english,word,unicode,True,True,None,newsgroups,3018,3778,1058,7532
+3,True,0.5,0.01,400,True,english,word,unicode,True,True,None,newsgroups,3115,4063,866,7532
+3,True,0.5,0.01,500,True,english,word,unicode,True,True,None,newsgroups,3119,4234,804,7532
+3,True,0.5,0.01,600,True,english,word,unicode,True,True,None,newsgroups,3150,4352,770,7532
+3,True,0.5,0.01,700,True,english,word,unicode,True,True,None,newsgroups,3152,4445,845,7532
+3,True,0.5,0.01,800,True,english,word,unicode,True,True,None,newsgroups,3135,4519,798,7532
+3,True,0.5,0.01,900,True,english,word,unicode,True,True,None,newsgroups,3061,4586,748,7532
+3,True,0.5,0.01,1000,True,english,word,unicode,True,True,None,newsgroups,3039,4643,718,7532
+3,True,0.5,0.01,1100,True,english,word,unicode,True,True,None,newsgroups,3042,4714,720,7532
+3,True,0.5,0.01,1200,True,english,word,unicode,True,True,None,newsgroups,3009,4788,700,7532
+3,True,0.5,0.01,1300,True,english,word,unicode,True,True,None,newsgroups,2987,4814,771,7532
+3,True,0.5,0.01,1400,True,english,word,unicode,True,True,None,newsgroups,2978,4816,758,7532
+3,True,0.5,0.01,1500,True,english,word,unicode,True,True,None,newsgroups,2934,4814,732,7532
