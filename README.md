@@ -1,1 +1,7 @@
-# IntSys
+# Finding the most similar textual documents using Case-Based Reasoning
+
+In recent years, huge amounts of unstructured textual data on the Internet is a big difficulty for AI algorithms to provide best recommendations for users and their search queries. Since the Internet became widespread, a lot of research has been done in the field of Natural Language Processing (NLP) and machine learning. Almost every solution transforms documents into Vector Space Models (VSM) in order to apply AI algorithms over them. One such approach is based on the Case-Based Reasoning (CBR). Therefore, the most important part of those systems is to compute the similarity between numerical data points. In 2016, the new similarity TS-SS metric is proposed, which showed state-of-the-art results in the field of textual mining for unsupervised learning. However, no one before has investigated its performances for supervised learning (classification task). In this paper, we devised a CBR system capable of finding the most similar documents for a given query aiming to investigate performances of the new state-of-the-art metric, TS-SS, and several other geometrical similarity measures — Euclidean distance, and Cosine similarity — that showed the best predictive results over several benchmark corpora. The results show surprising inappropriateness of TS-SS measure in the proposed setting
+
+Index Terms—CBR, machine learning, NLP, similarity measures, AI
+
+The full research is available at [Finding the most similar textual documents using Case-Based Reasoning](https://github.com/Maki94/IntSys/blob/master/Paper___Finding_the_most_similar_textual_documents_using_Case_Based_Reasoning.pdf)
