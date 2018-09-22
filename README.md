@@ -4,4 +4,4 @@ In recent years, huge amounts of unstructured textual data on the Internet is a 
 
 Index Terms—CBR, machine learning, NLP, similarity measures, AI
 
-The full research is available at [Finding the most similar textual documents using Case-Based Reasoning](https://github.com/Maki94/IntSys/blob/master/Paper___Finding_the_most_similar_textual_documents_using_Case_Based_Reasoning.pdf)
+The full research is available at [Finding the most similar textual documents using Case-Based Reasoning](https://github.com/Maki94/document-classification/blob/master/Paper___Finding_the_most_similar_textual_documents_using_Case_Based_Reasoning.pdf)
